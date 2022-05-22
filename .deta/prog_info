@@ -1,1 +1,0 @@
-{"id":"f2ffa716-13f6-47a0-91a7-c85d21e39b67","space":3466,"runtime":"nodejs14.x","name":"deta-crud","path":"9x8pb4","project":"b0ccxdg2","account":"144798365827","region":"us-west-1","deps":["deta@^1.1.0","dotenv@^16.0.1","express@^4.18.1"],"envs":null,"public":true,"log_level":"debug","cron":""}
