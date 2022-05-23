@@ -5,11 +5,20 @@ const db = require("../db");
 
 
 module.exports = class AuthService {
+
+    static async currentUser(user) {
+
+        if (user) {
+            const authUser = await db.table("users").fetch({ email: user.email });
+            return authUser.items[0];
+        }
+    }
+
+
     static async signup(user) {
         const newUser = await db.table("users").insert(user);
         return newUser;
     }
-
 
     static async signin(user) {
         const data = await db.table("users").fetch({ email: user.email });
@@ -37,5 +46,6 @@ module.exports = class AuthService {
 
 
     }
+
 }
 
