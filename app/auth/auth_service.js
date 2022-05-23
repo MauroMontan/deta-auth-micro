@@ -1,10 +1,41 @@
-
+const argon2 = require("argon2");
+const jwt = require("jsonwebtoken");
+const Config = require("../config");
 const db = require("../db");
+
 
 module.exports = class AuthService {
     static async signup(user) {
         const newUser = await db.table("users").insert(user);
         return newUser;
+    }
+
+
+    static async signin(user) {
+        const data = await db.table("users").fetch({ email: user.email });
+        const authUser = data.items[0];
+        if (!authUser)
+            return { "code": 404, "message": "user not found" }
+
+        if (! await argon2.verify(authUser.password, user.password))
+            return { "code": 403, "message": "invalid credentials" }
+
+        delete authUser.password;
+
+        return jwt.sign(authUser, Config.SECRET_KEY);
+
+
+    }
+
+    static async hashPassword(password) {
+        try {
+            return await argon2.hash(password);
+        } catch (error) {
+
+            throw new Error("cannot hash password");
+        }
+
+
     }
 }
 
