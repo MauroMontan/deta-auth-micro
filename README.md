@@ -35,4 +35,6 @@ npm run dev
 
 > If you deploy your micro before you add env variables, or you need to add more env variables, you need to update your .env file by running this command `deta update -e <env_file_name>` 
 
+## this repo is being built
+
 
