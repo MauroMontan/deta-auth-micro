@@ -1,6 +1,7 @@
 {
     "name": "your app name",
     "description": "your app description",
+    "runtime": "nodejs14.x",
     "env": [
         {
             "key": "PROJECT_KEY",
