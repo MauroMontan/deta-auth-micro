@@ -7,13 +7,8 @@ const authUser = async (token) => {
     const currentUser = jwt.verify(token, Config.SECRET_KEY);
     const authUser = await AuthService.currentUser(currentUser);
 
+    return currentUser.email === authUser.email ? true : false;
 
-    if (currentUser.email === authUser.email) {
-        return true;
-    }
-    else {
-        return false;
-    }
 }
 
 module.exports = authUser;

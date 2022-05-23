@@ -6,6 +6,7 @@ const Auth = require("./app/auth/auth_router");
 const db = require("./app/db");
 const authUser = require("./app/auth/authUser");
 
+const debug = true;
 const app = express();
 
 app.use(json());
@@ -21,9 +22,16 @@ app.get("/users", verifyToken, async (req, res) => {
         res.json(users);
     }
 
-
 });
 
-
 // export 'app'
-module.exports = app
+
+if (debug) {
+    const port = 3000;
+    app.listen(port, () => console.log(`listening on port ${port}`));
+} else {
+    module.exports = app
+}
+
+
+
