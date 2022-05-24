@@ -6,7 +6,7 @@ const Auth = require("./app/auth/auth_router");
 const db = require("./app/db");
 const authUser = require("./app/auth/authUser");
 
-const debug = true;
+const debug = false ;
 const app = express();
 
 app.use(json());
