@@ -12,7 +12,6 @@ This repo contains an express server running on [deta micros](https://docs.deta.
 
 ## Running Locally:
 
-> To running locally, ensure debug const is set on true in ./index.js `const debug = true;`
 
 WARNING: remember to add your project key in the env file. Without it, [Deta base](https://docs.deta.sh/docs/base/about) won't work', also you have to add a secret key for signing your tokens.
 
@@ -38,7 +37,7 @@ npm run dev
 
 ## Deta button deploy.
 
-If you prefer you can deploy this project directly to deta micros by clicking this button.
+If you prefer, you can deploy this project directly to deta micros by clicking this button.
 
 [![Deploy](https://button.deta.dev/1/svg)](https://go.deta.dev/deploy?repo=https://github.com/MauroMontan/express-micro-with-deta)
 
