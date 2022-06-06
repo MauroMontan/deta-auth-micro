@@ -10,11 +10,16 @@ const app = express();
 
 app.use(json());
 
-app.get('/', (_, res) => res.send('Hello World!'))
+app.get('/', (_, res) => res.json({
+    "author": "here goes your name",
+    "version": "here goes your version",
+    "description": "here goes your aweseome description",
+}));
 
 app.use("/auth", Auth);
 
-
+// this is an example of authentication usage:
+// THIS ENDPOINT RETURNS EVERY USER ON "users" table
 app.get("/users", verifyToken, async (req, res) => {
     const users = await db.table("users").fetch({});
     if (await authUser(req.token)) {

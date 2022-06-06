@@ -10,6 +10,18 @@ This repo contains an express server running on [deta micros](https://docs.deta.
 > Project dependencies are listed on package.json.
 
 
+## Usage 
+
+This Project contains two importan endpoints:
+- signup (for user registration)
+- signin (for user authentication)
+
+Those endpoints can be reached in:
+
+- `GET: https:your-micro-url/auth/signup` 
+- `GET: https:your-micro-url/auth/signin` 
+
+
 ## Running Locally:
 
 
