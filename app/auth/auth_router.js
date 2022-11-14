@@ -8,7 +8,7 @@ router.post("/signup", async (req, res) =>
 );
 
 router.post("/signin", async (req, res) =>
-  res.json(await AuthController.signin(req.body))
+  res.status(200).send(await AuthController.signin(req.body))
 );
 
 module.exports = router;
