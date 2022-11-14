@@ -8,8 +8,8 @@ module.exports = class AuthController {
     return await AuthService.signup(user);
   }
 
-  static async signin(payload) {
+  static signin(payload) {
     const user = new User(payload);
-    return await AuthService.signin(user);
+    return AuthService.signin(user);
   }
 };
