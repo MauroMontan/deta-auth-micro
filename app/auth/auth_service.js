@@ -25,9 +25,14 @@ module.exports = class AuthService {
     if (!(await argon2.verify(authUser.password, user.password)))
       return { code: 403, message: "invalid credentials" };
 
-    return jwt.decode({ email: authUser.email }, Config.SECRET_KEY, {
-      algorithm: "RS256",
-    });
+    return jwt.decode(
+      { email: authUser.email },
+      Config.SECRET_KEY,
+      {
+        algorithm: "RS256",
+      },
+      (err, token) => (err ? err : token)
+    );
   }
 
   static async hashPassword(password) {
