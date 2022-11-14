@@ -1,0 +1,27 @@
+name: Deta deployment
+on: [push]
+
+env:
+  PROJECT_KEY: ${{secrets.PROJECT_KEY}}
+  SECRET_KEY: ${{secrets.SECRET_KEY}}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2 #Be sure you check-out the repo first. Deta CLI needs access to the files
+      - uses: BogDAAAMN/deta-deploy-action@v1.0.1
+        with:
+          deta-access-token: ${{ secrets.DETA_TOKEN }} #Deta access token https://docs.deta.sh/docs/cli/auth
+          deta-name: "authentication" #Deta Micro name https://docs.deta.sh/docs/cli/commands/#deta-clone
+          deta-project: "python-file-uploader"
+          deta-project-dir: "." #Optional: directory to be deployed on Deta. Default is the root "."
+
+      - run: |
+          # Create .env
+          echo "PROJECT_KEY=${{ env.PROJECT_KEY }}" | tee -a .env > /dev/null
+          echo "ROOT_FOLDER=${{ env.ROOT_FOLDER }}" | tee -a .env > /dev/null
+
+          # Deploy environment variables
+          export DETA_ACCESS_TOKEN=${{ secrets.DETA_TOKEN }}
+          ~/.deta/bin/deta update -e .env
