@@ -1,19 +1,19 @@
 {
-    "name": "your app name",
-    "description": "your app description",
-    "runtime": "nodejs14.x",
-    "env": [
-        {
-            "key": "PROJECT_KEY",
-            "description": "this key is for deta base functionality",
-            "value": "your project key",
-            "required": true
-        },
-        {
-            "key": "SECRET_KEY",
-            "description": "this is your jwt secret key",
-            "value": "your super secret key",
-            "required": true
-        }
-    ]
+  "name": "authentication",
+  "description": "authentication microservice for deta projects",
+  "runtime": "nodejs14.x",
+  "env": [
+    {
+      "key": "PROJECT_KEY",
+      "description": "this key is for deta base functionality",
+      "value": "your project key",
+      "required": true
+    },
+    {
+      "key": "SECRET_KEY",
+      "description": "this is your jwt secret key",
+      "value": "your super secret key",
+      "required": true
+    }
+  ]
 }
