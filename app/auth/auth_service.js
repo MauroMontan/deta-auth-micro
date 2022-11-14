@@ -19,24 +19,14 @@ module.exports = class AuthService {
   static async signin(user) {
     const data = await db.table("users").fetch({ email: user.email });
     const authUser = data.items[0];
-
     if (!authUser) return { code: 404, message: "user not found" };
 
     if (!(await argon2.verify(authUser.password, user.password)))
       return { code: 403, message: "invalid credentials" };
 
-    const token = jwt.sign(
-      { email: authUser.email },
-      Config.SECRET_KEY,
-      {
-        algorithm: "RS256",
-      },
-      (_, token) => {
-        return token;
-      }
-    );
+    delete authUser.password;
 
-    return token;
+    return jwt.sign(authUser, Config.SECRET_KEY);
   }
 
   static async hashPassword(password) {
