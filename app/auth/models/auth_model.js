@@ -1,3 +1,8 @@
+/*
+  All attributes defined in this class will be stored in your users database
+
+*/
+
 module.exports = class Auth {
   constructor(payload) {
     this.email = payload.email;
