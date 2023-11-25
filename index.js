@@ -2,24 +2,26 @@
 const express = require("express");
 const { json } = require("express");
 const verifyToken = require("./app/middleware/headers");
-const Auth = require("./app/auth/auth_router");
-const db = require("./app/db");
-const authUser = require("./app/auth/authUser");
+const AuthController = require("./app/auth/auth_controller");
+const AuthService = require("./app/auth/auth_service");
+const Config = require("./app/config");
 
 const app = express();
 
 app.use(json());
 
-app.get("/", (_, res) => res.json({}));
-
-app.use("/auth", Auth);
+app.use("/", AuthController);
 
 // THIS ENDPOINT RETURNS EVERY USER ON "users" table
-app.get("/users", verifyToken, async (req, res) => {
-  const users = await db.table("users").fetch({});
-  if (await authUser(req.token)) {
-    res.json(users);
+app.get("/demo", verifyToken, async (req, res) => {
+  if (await AuthService.verifyUser(req.token)) {
+    res.send("you are signed");
+  } else {
+    res.send("forbidden")
   }
 });
 
-module.exports = app;
+app.listen(Config.PORT, () => {
+  console.log("listening on: " + Config.PORT)
+})
+

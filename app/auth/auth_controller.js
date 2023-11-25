@@ -1,15 +1,19 @@
+const { Router } = require("express");
 const AuthService = require("./auth_service");
-const User = require("./auth_model");
+const emailValidatorHandler = require("../middleware/email_validator_handler");
+const signInHandler = require("../middleware/signInHandler");
+const passwordValidatorHandler = require("../middleware/password_validator_handler");
 
-module.exports = class AuthController {
-  static async signup(payload) {
-    const hashed = await AuthService.hashPassword(payload.password);
-    const user = new User({ ...payload, ...{ password: hashed } });
-    return await AuthService.signup(user);
-  }
+const router = Router();
 
-  static async signin(payload) {
-    const user = new User(payload);
-    return await AuthService.signin(user);
-  }
-};
+router.post("/signup",
+  passwordValidatorHandler, emailValidatorHandler, async (req, res) =>
+  res.json(await AuthService.signup(req.body))
+);
+
+router.post("/signin",
+  passwordValidatorHandler, signInHandler, async (req, res) =>
+  res.json(await AuthService.signin(req.body))
+);
+
+module.exports = router;
