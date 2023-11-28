@@ -2,8 +2,6 @@
 
 Docs building ...
 
-
-
 ```yaml
 
 # Spacefile Docs: https://go.deta.dev/docs/spacefile/v0
