@@ -1,12 +1,10 @@
 const ExceptionMapper = require("../Exceptions/exceptions");
-
-const AuthService = require("../auth/auth_service");
-const Auth = require("../auth/models/auth_model");
+const User = require("../auth/models/user");
 const Validators = require("../validators/validator");
 
 
 const passwordValidatorHandler = async (req, res, next) => {
-  const user = new Auth(req.body);
+  const user = new User(req.body);
 
 
   if (!Validators.isValidPassword(user.password)) {

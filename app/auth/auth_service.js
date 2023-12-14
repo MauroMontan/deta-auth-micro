@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const Config = require("../config");
 
 const db = require("../db");
-const Auth = require("./models/auth_model");
+const User = require("./models/user");
 const AuthResponse = require("./models/auth_response_model");
 module.exports = class AuthService {
 
@@ -11,7 +11,7 @@ module.exports = class AuthService {
   static async getUser(user) {
     if (user) {
       const authUser = await db.table("users").fetch({ email: user.email });
-      return new Auth(authUser.items[0]);
+      return new User(authUser.items[0]);
     }
   }
 
@@ -32,20 +32,36 @@ module.exports = class AuthService {
   };
 
 
+  /**
+   * Validate if user exist on database
+   *@param {User} user - user model
+   *@returns {Promise<boolean>}
+  */
   static async userExist(user) {
     const data = await db.table("users").fetch({ email: user.email });
     return data.items[0] !== undefined;
   }
 
+
+  /**
+   * Push new user to database
+   *@param {User} user - user model
+   *@returns {Promise<AuthResponse>}
+  */
   static async signup(payload) {
 
     const hashed = await AuthService.hashPassword(payload.password);
-    const user = new Auth({ ...payload, ...{ password: hashed } });
+    const user = new User({ ...payload, ...{ password: hashed } });
 
     const newUser = await db.table("users").insert(user);
     return new AuthResponse(newUser);
   }
 
+  /**
+   * Generates acces token
+   *@param {User} user - user model
+   *@returns {Promise<string>}
+  */
   static async signin(user) {
 
     const authUser = await this.getUser(user);
