@@ -1,11 +1,11 @@
 const Validators = require("../validators/validator");
 const ExceptionMapper = require("../Exceptions/exceptions");
-const AuthResponse = require("../auth/models/auth_response_model");
+const UserResponse = require("../auth/models/user_response");
 const AuthService = require("../auth/auth_service")
 
 
 const emailValidatorHandler = async (req = new Request(), res, next) => {
-  const user = new AuthResponse(req.body);
+  const user = new UserResponse(req.body);
   if (!Validators.isEmail(user.email)) {
     res.status(400)
       .json(ExceptionMapper

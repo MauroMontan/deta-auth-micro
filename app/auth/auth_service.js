@@ -2,16 +2,17 @@ const argon2 = require("argon2");
 const jwt = require("jsonwebtoken");
 const Config = require("../config");
 
-const db = require("../db");
 const User = require("./models/user");
-const AuthResponse = require("./models/auth_response_model");
+const authdb = require("../db");
+const UserResponse = require("./models/user_response");
+
 module.exports = class AuthService {
 
 
   static async getUser(user) {
     if (user) {
-      const authUser = await db.table("users").fetch({ email: user.email });
-      return new User(authUser.items[0]);
+      const authUser = await authdb.fetchOne({ email: user.email });
+      return new User(authUser);
     }
   }
 
@@ -38,23 +39,25 @@ module.exports = class AuthService {
    *@returns {Promise<boolean>}
   */
   static async userExist(user) {
-    const data = await db.table("users").fetch({ email: user.email });
-    return data.items[0] !== undefined;
+    const data = await authdb.fetchOne({ email: user.email });
+
+    return data !== undefined;
   }
 
 
   /**
    * Push new user to database
    *@param {User} user - user model
-   *@returns {Promise<AuthResponse>}
+   *@returns {Promise<UserResponse>}
   */
   static async signup(payload) {
 
-    const hashed = await AuthService.hashPassword(payload.password);
+    const hashed = await this.hashPassword(payload.password);
     const user = new User({ ...payload, ...{ password: hashed } });
 
-    const newUser = await db.table("users").insert(user);
-    return new AuthResponse(newUser);
+    await authdb.insert(user);
+
+    return new UserResponse(user);
   }
 
   /**
@@ -66,17 +69,20 @@ module.exports = class AuthService {
 
     const authUser = await this.getUser(user);
 
-    return jwt.sign(JSON.stringify(new AuthResponse(authUser)), Config.SECRET_KEY);
+    return jwt.sign(JSON.stringify(new UserResponse(authUser)), Config.SECRET_KEY);
   }
 
   static async verifyPassword(user) {
-
     const authUser = await this.getUser(user);
-
     return await argon2.verify(authUser.password, user.password)
-
   }
 
+
+  /**
+   * Hashing password generator
+   *@param {string} password - new user password
+   *@returns {Promise<string> | Error}
+  */
   static async hashPassword(password) {
     try {
       return await argon2.hash(password);
