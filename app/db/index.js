@@ -18,7 +18,7 @@ class Database {
   }
 
   async fetch(payload) {
-    return (await this.#deta.Base(this.#table_name).fetch(payload)).items
+    return Object.freeze((await this.#deta.Base(this.#table_name).fetch(payload)).items)
   }
 
   async fetchOne(payload) {

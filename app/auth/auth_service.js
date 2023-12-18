@@ -69,7 +69,9 @@ module.exports = class AuthService {
 
     const authUser = await this.getUser(user);
 
-    return jwt.sign(JSON.stringify(new UserResponse(authUser)), Config.SECRET_KEY);
+    const response = new UserResponse(authUser)
+
+    return jwt.sign({ ...response }, Config.SECRET_KEY, { expiresIn: '7d' });
   }
 
   static async verifyPassword(user) {
